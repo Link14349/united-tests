@@ -54,11 +54,11 @@ unitedt
 #### _Basic structure_
 ```json
 {
-  "test-out": boolean (default: false),
-  "out-in-json": boolean (default: false),
-  "out-json-name": string (default: "tests.json"),
-  "read-dir": string (default: "tests-info.json"),
-  "tests": array
+  "test-out": "boolean (default: false)",
+  "out-in-json": "boolean (default: false)",
+  "out-json-name": "string (default: \"tests.json\")",
+  "read-dir": "string (default: \"tests-info.json\")",
+  "tests": "array"
 }
 ```
 __Prototypes__  
@@ -71,13 +71,13 @@ __Prototypes__
 #### Element of tests
 ```json
 {
-  "name": string,
+  "name": "string",
   "run": {
-    "inputs": array,
-    "outputs": array
+    "inputs": "array",
+    "outputs": "array"
   }
 }
 ```
 
 ## License
-MIT
+[MIT](https://github.com/qianduanXIAOHAOZI/united-tests/blob/master/LICENSE)

@@ -1,6 +1,6 @@
 {
   "name": "united-tests",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "This is a tool that can automate and validate unit tests.",
   "main": "index.js",
   "bin": {
@@ -19,5 +19,9 @@
   "devDependencies": {
     "chalk": "^2.4.2",
     "commander": "^2.19.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qianduanXIAOHAOZI/united-tests"
   }
 }
