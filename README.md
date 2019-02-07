@@ -23,7 +23,7 @@ unitedt [options]
 - -V, --version: __output the version number__
 - -e, --error: __show detailed error message when got error__
 - -o, --out: __open test-out flag__
-- -p, --put: __open put-json flag(This flag can output some info in a json file)__
+- -f, --fuzzy: __Open fuzzy query (the fuzzy mode is in the form of regular expression)__
 - -i, --info [filename]: __Set the out info json file (default: "tests-info.json")__
 - -j, --json [filename]: __Set the entry json file (default: "tests.json")__
 ### Example
@@ -56,6 +56,7 @@ unitedt
 {
   "test-out": "boolean (default: false)",
   "out-in-json": "boolean (default: false)",
+  "fuzzy": "boolean (default: false)",
   "out-json-name": "string (default: \"tests.json\")",
   "read-dir": "string (default: \"tests-info.json\")",
   "tests": "array"
@@ -64,7 +65,8 @@ unitedt
 __Prototypes__  
 - test-out _Set whether to output the result of the test module_
 - out-in-json _Set whether to output the test results and summary to the json file_
-- out-in-json _Set json filename_
+- out-json-name _Set json filename_
+- fuzzy _Whether to enable fuzzy query (the fuzzy mode is in the form of regular expression)_
 - read-dir _Set the path to the unit test summary_
 - tests _Set up each module that the unit test needs to test and its input and output samples_
 

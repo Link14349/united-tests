@@ -5,9 +5,10 @@ const fs = require("fs");
 const path = require("path");
 
 program
-    .version('1.0.0')
+    .version('1.0.4')
     .option("-e, --error", "show detailed error message")
     .option("-o, --out", "open test-out flag")
+    .option("-f, --fuzzy", "open fuzzy query (the fuzzy mode is in the form of regular expression)")
     .option("-p, --put", "open put-json flag(This flag can output some info in a json file)")
     .option("-i, --info [filename]", "Set the out info json file", "tests-info.json")
     .option("-j, --json [filename]", "Set the entry json file", "tests.json")
@@ -51,6 +52,7 @@ function main() {
         "test-out": testOut = program.out,
         "out-in-json": outJSON = program.put,
         "out-json-name": outJSONName = program.info,
+        fuzzy = program.fuzzy,
         tests
     } = testsJSON;
     let infoJSON = {
@@ -62,6 +64,10 @@ function main() {
         let name = i["name"];
         let inputs = i["run"]["inputs"];
         let outputs = i["run"]["outputs"];
+        if (!inputs || !outputs) {
+            console.log(chalk.red.bold("[ERROR] Inputs or outputs is undefined! Start united tests must use them."));
+            return;
+        }
         let point = 100 / inputs.length;
         let score = 0;
         let failed = [];
@@ -86,11 +92,21 @@ function main() {
         for (let j in inputs) {
             let out = test(...inputs);
             if (testOut) console.log(out);
-            if (out == outputs[j]) {
-                score += point;
-                success.push(j);
+            if (fuzzy) {
+                outputs[j] = new RegExp(outputs[j]);
+                if (out.search(outputs[j]) > -1) {
+                    score += point;
+                    success.push(j);
+                } else {
+                    failed.push(j);
+                }
             } else {
-                failed.push(j);
+                if (out == outputs[j]) {
+                    score += point;
+                    success.push(j);
+                } else {
+                    failed.push(j);
+                }
             }
         }
         console.log(chalk.yellow("[INFO] Test '" + name + "' got score: " + score + ""));
