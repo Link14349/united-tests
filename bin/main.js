@@ -1,8 +1,10 @@
 #!/usr/bin/env node
+
 let program = require('commander');
 const chalk = require('chalk');
 const fs = require("fs");
 const path = require("path");
+const smallest = 0.1;
 
 program
     .version('1.0.4')
@@ -15,7 +17,7 @@ program
     .description('This is a tool that can automate and validate unit tests.');
 program.parse(process.argv);
 
-function main() {
+function main(program) {
     let testEntry = program.json;
     console.log(chalk.bold("untied-tests command line tool"));
     console.log(chalk.cyan("[INFO] Reading '" + testEntry + "'..."));
@@ -59,6 +61,11 @@ function main() {
         "main-score": 0,
         "tests": []
     };
+    if (tests === void(0)) {
+        console.log(chalk.red.bold("[ERROR] Cannot find prototype 'tests'."));
+        console.log("exit.");
+        return;
+    }
     let mainScore = 0;
     for (let i of tests) {
         let name = i["name"];
@@ -86,11 +93,20 @@ function main() {
             } else {
                 console.log(chalk.red("Add flag -e or --error to show detailed error message."));
             }
-            console.log("exit.");
-            return;
         }
         for (let j in inputs) {
-            let out = test(...inputs);
+            let out = "";
+            try {
+                out = test(...inputs);
+            } catch (e) {
+                console.log(chalk.red.bold("[ERROR] Ran test module '" + name + "' in directory '" + readDir + "' failed."));
+                console.log("Module path: " + modulePath);
+                if (program.error) {
+                    console.log("Detailed error message: \n" + chalk.red(JSON.stringify(e, null, 2)));
+                } else {
+                    console.log(chalk.red("Add flag -e or --error to show detailed error message."));
+                }
+            }
             if (testOut) console.log(out);
             if (fuzzy) {
                 outputs[j] = new RegExp(outputs[j]);
@@ -109,15 +125,17 @@ function main() {
                 }
             }
         }
+        score = score.toFixed(2);
+        score = Number(score);
         console.log(chalk.yellow("[INFO] Test '" + name + "' got score: " + score + ""));
-        if (score == 100) {
+        if (score + smallest >= 100) {
             console.log(chalk.green("[FINISH] Test '" + name + "' finished all!"));
         } else {
-            for (let j in success) {
-                console.log(chalk.green("[FINISH] Test '" + name + "' passed test point " + j));
-            }
             for (let j in failed) {
-                console.log(chalk.yellow("[FINISH] Test '" + name + "' failed test point " + j));
+                console.log(chalk.yellow("[FINISH] Test '" + name + "' failed test point " + failed[j]));
+            }
+            for (let j in success) {
+                console.log(chalk.green("[FINISH] Test '" + name + "' passed test point " + success[j]));
             }
         }
         mainScore += score;
@@ -140,4 +158,6 @@ function main() {
     console.log(chalk.green.bold.bgBlack("[FINISH]"));
 }
 
-main();
+main(program);
+
+module.exports = main;
