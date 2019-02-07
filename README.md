@@ -79,5 +79,48 @@ __Prototypes__
 }
 ```
 
+
+## Issues
+### Issues-1
+```
+internal/modules/cjs/loader.js:611
+    throw err;
+    ^
+
+Error: Cannot find module 'commander'
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:609:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:535:25)
+    at Module.require (internal/modules/cjs/loader.js:663:17)
+    at require (internal/modules/cjs/helpers.js:20:18)
+    at Object.<anonymous> (/usr/local/lib/node_modules/united-tests/bin/main.js:2:15)
+    at Module._compile (internal/modules/cjs/loader.js:734:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:745:10)
+    at Module.load (internal/modules/cjs/loader.js:626:32)
+    at tryModuleLoad (internal/modules/cjs/loader.js:566:12)
+    at Function.Module._load (internal/modules/cjs/loader.js:558:3)
+```
+This shows that the command line tool is missing the npm package commander.
+Enter `sudo npm install commander -g` on the command line to solve
+
+### Issues-2
+```internal/modules/cjs/loader.js:611
+       throw err;
+       ^
+   
+   Error: Cannot find module 'chalk'
+       at Function.Module._resolveFilename (internal/modules/cjs/loader.js:609:15)
+       at Function.Module._load (internal/modules/cjs/loader.js:535:25)
+       at Module.require (internal/modules/cjs/loader.js:663:17)
+       at require (internal/modules/cjs/helpers.js:20:18)
+       at Object.<anonymous> (/usr/local/lib/node_modules/united-tests/bin/main.js:3:15)
+       at Module._compile (internal/modules/cjs/loader.js:734:30)
+       at Object.Module._extensions..js (internal/modules/cjs/loader.js:745:10)
+       at Module.load (internal/modules/cjs/loader.js:626:32)
+       at tryModuleLoad (internal/modules/cjs/loader.js:566:12)
+       at Function.Module._load (internal/modules/cjs/loader.js:558:3)
+```
+This shows that the command line tool is missing the npm package chalk.
+Enter `sudo npm install chalk -g` on the command line to solve
+
 ## License
 [MIT](https://github.com/qianduanXIAOHAOZI/united-tests/blob/master/LICENSE)
